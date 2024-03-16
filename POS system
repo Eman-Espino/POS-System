@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eman Kpop Market</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('seventeen_background.jpg'); /* Add your Seventeen Kpop background image here */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.7); /* Add a semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a shadow effect */
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .order-section, .menu-section, .add-item-section, .cash-section {
+            margin-bottom: 20px;
+        }
+
+        .menu-item, button {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: lightblue;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        .menu-item:hover, button:hover {
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Eman Kpop Market</h1>
+        <div class="order-section">
+            <h2>Your Order</h2>
+            <div id="orderList"></div>
+            <p>Total Price: ₱<span id="totalPrice">0</span></p> <!-- Replaced $ with ₱ for peso sign -->
+            <button id="finalizeOrderBtn" onclick="finalizeOrder()">Finalize Order</button>
+        </div>
+        <div class="menu-section">
+            <h2>Menu</h2>
+            <div id="menuItems">
+                <div class="menu-item" onclick="addToOrder('Kimchi', 100)">Kimchi - ₱100</div> <!-- Replaced $ with ₱ for peso sign -->
+                <div class="menu-item" onclick="addToOrder('Bulgogi', 120)">Bulgogi - ₱120</div> <!-- Replaced $ with ₱ for peso sign -->
+                <div class="menu-item" onclick="addToOrder('Ramyeun', 80)">Ramyeun - ₱80</div> <!-- Replaced $ with ₱ for peso sign -->
+            </div>
+        </div>
+        <div class="add-item-section">
+            <h2>Add a Food Item</h2>
+            <input type="text" id="foodNameInput" placeholder="Food Name">
+            <input type="number" id="foodPriceInput" placeholder="Price">
+            <button onclick="addCustomItem()">Add Item</button>
+        </div>
+        <div class="cash-section">
+            <h2>Cash</h2>
+            <input type="number" id="cashInput" placeholder="Enter Cash Amount">
+            <button onclick="pay()">Pay</button>
+        </div>
+    </div>
+    <script>
+        let order = [];
+        let totalPrice = 0;
+
+        function addToOrder(item, price) {
+            order.push({ name: item, price: price });
+            totalPrice += price;
+            updateOrderList();
+        }
+
+        function updateOrderList() {
+            const orderList = document.getElementById('orderList');
+            orderList.innerHTML = '';
+            order.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.textContent = `${item.name} - ₱${item.price}`; // Replaced $ with ₱ for peso sign
+                orderList.appendChild(itemDiv);
+            });
+            document.getElementById('totalPrice').textContent = totalPrice;
+        }
+
+        function addCustomItem() {
+            const foodNameInput = document.getElementById('foodNameInput');
+            const foodPriceInput = document.getElementById('foodPriceInput');
+
+            const name = foodNameInput.value;
+            const price = parseInt(foodPriceInput.value);
+
+            if (name && price) {
+                addToOrder(name, price);
+                foodNameInput.value = '';
+                foodPriceInput.value = '';
+            } else {
+                alert('Please enter both food name and price.');
+            }
+        }
+
+        function finalizeOrder() {
+            alert('Your order has been finalized. Total Price: ₱' + totalPrice); // Replaced $ with ₱ for peso sign
+        }
+
+        function pay() {
+            const cashInput = document.getElementById('cashInput').value;
+            const change = cashInput - totalPrice;
+            if (change >= 0) {
+                alert('Payment successful! Change: ₱' + change); // Replaced $ with ₱ for peso sign
+            } else {
+                alert('Insufficient cash!');
+            }
+        }
+    </script>
+</body>
+</html>
